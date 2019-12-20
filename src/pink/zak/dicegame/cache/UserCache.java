@@ -14,6 +14,10 @@ public class UserCache {
         this.storage = storage;
     }
 
+    public Map<String, User> getUsers() {
+        return this.userMap;
+    }
+
     public User authenticateUser(String username, String password) {
         String usernameLower = username.toLowerCase();
         if (this.userMap.containsKey(usernameLower)) { // Checks if the user is in the map, and if they are, proceed.
