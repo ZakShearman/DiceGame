@@ -2,11 +2,10 @@ package pink.zak.dicegame.storage;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import lombok.SneakyThrows;
+import pink.zak.dicegame.Controller;
+import pink.zak.dicegame.cache.UserCache;
 import pink.zak.dicegame.objects.User;
 
 import javax.swing.filechooser.FileSystemView;
@@ -17,16 +16,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class Storage {
+    private final Controller controller;
     private final Path baseDirectoryPath;
     private final Path userPath;
 
-    public Storage() {
+    public Storage(Controller controller) {
+        this.controller = controller;
         this.baseDirectoryPath = this.makePathIfNotExists(FileSystemView.getFileSystemView().getHomeDirectory().toPath().resolve("Zak's Dice Game"));
         this.userPath = this.makePathIfNotExists(this.baseDirectoryPath.resolve("userdata"));
-        this.cache();
     }
 
     public void cache() {
+        UserCache userCache = controller.getUserCache();
         File[] userFiles = this.userPath.toFile().listFiles();
 
         if (userFiles == null) {
@@ -34,7 +35,7 @@ public class Storage {
         }
         //noinspection ConstantConditions
         for (File file : this.userPath.toFile().listFiles()) {
-            this.loadUser(file.getName().replace(".json", ""));
+            userCache.cachedUser(this.loadUser(file.getName().replace(".json", "")));
         }
     }
 
@@ -54,8 +55,10 @@ public class Storage {
         Multiset<Integer> gameScores = HashMultiset.create();
         for (JsonElement element : jsonObject.get("scores").getAsJsonArray()) {
             gameScores.add(element.getAsInt());
+            System.out.println("User: " + username + " game score added: " + element.getAsInt());
         }
-        return new User(username, password, gameScores);
+        System.out.println("User: " + username + " password is " + password);
+        return new User(username.toLowerCase(), password, gameScores);
     }
 
     @SneakyThrows
@@ -69,8 +72,12 @@ public class Storage {
 
         Writer writer = Files.newBufferedWriter(userPath);
         JsonObject jsonObject = new JsonObject();
+        JsonArray jsonArray = new JsonArray();
         jsonObject.addProperty("password", user.getPassword());
-        jsonObject.addProperty("scores", user.getGameScores().toString());
+        for (int score : user.getGameScores()) {
+            jsonArray.add(score);
+        }
+        jsonObject.add("scores", jsonArray);
         gson.toJson(jsonObject, writer);
         writer.close();
     }

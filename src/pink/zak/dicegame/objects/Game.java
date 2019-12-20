@@ -24,15 +24,14 @@ public class Game {
             int playerOneRoundScore = this.roundForPlayer(this.player1);
             int playerTwoRoundScore = this.roundForPlayer(this.player2);
 
-            this.print("[Player 1] You gained %s points this round.", playerOneRoundScore);
-            this.print("[Player 1] You now have a total score of %s", this.player1.getScore().intValue());
+            this.print("[%s] You gained %s points this round.", player1.getUsername(), playerOneRoundScore);
+            this.print("[%s] You now have a total score of %s", player1.getUsername(), this.player1.getScore().intValue());
             this.print(" ");
-            this.print("[Player 2] You gained %s points this round.", playerTwoRoundScore);
-            this.print("[Player 2] You now have a total score of %s", this.player2.getScore().intValue());
+            this.print("[%s] You gained %s points this round.", player2.getUsername(), playerTwoRoundScore);
+            this.print("[%s] You now have a total score of %s", player2.getUsername(), this.player2.getScore().intValue());
 
             this.print("");
             this.print("[Round End] Round %s has now ended!", this.round);
-            this.print("");
             this.round++;
         }
 
@@ -40,13 +39,13 @@ public class Game {
         int finalPlayerTwoScore = this.player2.getScore().intValue();
         this.print("");
         if (this.player1.getScore().intValue() > this.player2.getScore().intValue()) {
-            this.print("Player One is the winner of the game with a score of %s.", finalPlayerOneScore);
-            this.print("Player Two lost with a score of %s.", finalPlayerTwoScore);
-            this.print("This means that Player Two lost by %s points.", finalPlayerOneScore - finalPlayerTwoScore);
+            this.print("%s is the winner of the game with a score of %s.", player1.getUsername(), finalPlayerOneScore);
+            this.print("%s lost with a score of %s.", player2.getUsername(), finalPlayerTwoScore);
+            this.print("This means that %s lost by %s points.", player2.getUsername(), finalPlayerOneScore - finalPlayerTwoScore);
         } else {
-            this.print("Player Two is the winner of the game with a score of %s.", finalPlayerTwoScore);
-            this.print("Player One lost with a score of %s.", finalPlayerOneScore);
-            this.print("This means that Player One lost by %s points.", finalPlayerTwoScore - finalPlayerOneScore);
+            this.print("%s is the winner of the game with a score of %s.", player2.getUsername(), finalPlayerTwoScore);
+            this.print("%s lost with a score of %s.", player1.getUsername(), finalPlayerOneScore);
+            this.print("This means that %s lost by %s points.", player1.getUsername(), finalPlayerTwoScore - finalPlayerOneScore);
         }
         this.player1.addFinalGameScore(this.player1.getScore().intValue());
         this.player2.addFinalGameScore(this.player2.getScore().intValue());

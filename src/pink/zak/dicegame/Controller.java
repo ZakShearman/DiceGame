@@ -13,8 +13,9 @@ public class Controller {
     private User playerOne;
 
     public Controller() {
-        this.storage = new Storage();
+        this.storage = new Storage(this);
         this.userCache = new UserCache(this.storage); // Create an instance of the UserCache.
+        this.storage.cache();
     }
 
     public void onEnable() {
@@ -85,5 +86,9 @@ public class Controller {
         public String getName() {
             return this.name;
         } // Returns the name assigned with the Enum variable.
+    }
+
+    public UserCache getUserCache() {
+        return this.userCache;
     }
 }
