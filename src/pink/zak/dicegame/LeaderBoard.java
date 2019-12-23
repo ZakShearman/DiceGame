@@ -9,7 +9,8 @@ import java.util.Map;
 
 public class LeaderBoard {
     private final UserCache userCache;
-    private Map<String, Integer> leaderBoard = Maps.newTreeMap(Collections.reverseOrder()); // The tree map will automatically sort the values. Reverses so that it goes from highest to lowest.
+    // The tree map will automatically sort the values. Reverses so that it goes from highest to lowest.
+    private Map<String, Integer> leaderBoard = Maps.newTreeMap(Collections.reverseOrder());
 
     public LeaderBoard(UserCache userCache) { // accept the {@link UserCache} in the constructor to get all the users
         this.userCache = userCache;
@@ -20,9 +21,12 @@ public class LeaderBoard {
     }
 
     public void update() {
-        for (Map.Entry<String, User> entry : this.userCache.getUsers().entrySet()) { // iterates through all users in the cache.
-            for (int score : entry.getValue().getGameScores()) { // Loops through every user's scores.
-                this.leaderBoard.put(entry.getKey(), score); // Puts the score of the user into the leaderBoard Map.
+        // Iterates through all users in the cache.
+        for (Map.Entry<String, User> entry : this.userCache.getUsers().entrySet()) {
+            // Loops through every user's scores.
+            for (int score : entry.getValue().getGameScores()) {
+                // Puts the score of the user into the leaderBoard Map.
+                this.leaderBoard.put(entry.getKey(), score);
             }
         }
     }

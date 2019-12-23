@@ -11,14 +11,9 @@
 
     <name>DiceGame</name>
 
-    <description>A plugin to make your players active!</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <repositories>
-
-    </repositories>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
@@ -42,13 +37,25 @@
             <version>1.18.10</version>
             <scope>provided</scope>
         </dependency>
-
-
     </dependencies>
 
     <build>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
+            <plugin>
+                <!-- Build an executable JAR -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>pink.zak.dicegame.DiceGame</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

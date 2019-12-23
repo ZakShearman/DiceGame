@@ -24,6 +24,7 @@ public class DoubleDice {
     }
 
     public static DoubleDice roll() {
-        return new DoubleDice(ThreadLocalRandom.current().nextInt(1, 7), ThreadLocalRandom.current().nextInt(1, 7));
+        return new DoubleDice(ThreadLocalRandom.current().nextInt(1, 7),
+                ThreadLocalRandom.current().nextInt(1, 7));
     }
 }

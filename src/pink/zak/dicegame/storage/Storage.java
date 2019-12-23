@@ -22,16 +22,19 @@ public class Storage {
 
     public Storage(Controller controller) {
         this.controller = controller;
-        this.baseDirectoryPath = this.makePathIfNotExists(FileSystemView.getFileSystemView().getHomeDirectory().toPath().resolve("Zak's Dice Game")); // Creates folder on the Desktop.
+        // Creates folder on the Desktop.
+        this.baseDirectoryPath = this.makePathIfNotExists(FileSystemView.getFileSystemView().getHomeDirectory().toPath().resolve("Zak's Dice Game"));
         this.userPath = this.makePathIfNotExists(this.baseDirectoryPath.resolve("userdata")); // Creates folder for storing user data.
     }
 
     public void cache() {
         UserCache userCache = controller.getUserCache(); // Gets the user cache for registering that a user is loaded.
 
-        //noinspection ConstantConditions <- IntelliJ Annotation
-        for (File file : this.userPath.toFile().listFiles()) { // Loops through all of the files.
-            userCache.cachedUser(this.loadUser(file.getName().replace(".json", ""))); // Loads every user and registers them in the UserCache, removes .json from the file name
+        // Loops through all of the files.
+        //noinspection ConstantConditions <- IntelliJ annotation
+        for (File file : this.userPath.toFile().listFiles()) {
+            // Loads every user and registers them in the UserCache, removes .json from the file name
+            userCache.cachedUser(this.loadUser(file.getName().replace(".json", "")));
         }
     }
 
@@ -48,10 +51,12 @@ public class Storage {
 
         String password = jsonObject.get("password").getAsString(); // Gets the password of the user.
         Multiset<Integer> gameScores = HashMultiset.create(); // Creates a set for the scores of the user.
-        for (JsonElement element : jsonObject.get("scores").getAsJsonArray()) { // Loops through all of the scores of the user and adds them to the set.
+        // Loops through all of the scores of the user and adds them to the set.
+        for (JsonElement element : jsonObject.get("scores").getAsJsonArray()) {
             gameScores.add(element.getAsInt());
         }
-        return new User(username.toLowerCase(), password, gameScores); // Creates a new User object and returns it so it is added to the UserCache's Map.
+        // Creates a new User object and returns it so it is added to the UserCache's Map.
+        return new User(username.toLowerCase(), password, gameScores);
     }
 
     @SneakyThrows
@@ -77,7 +82,8 @@ public class Storage {
 
     @SneakyThrows
     private Path makePathIfNotExists(Path path) {
-        if (Files.exists(path) && (Files.isDirectory(path) || Files.isSymbolicLink(path))) { // Logic for checking if the path exists already.
+        // Logic for checking if the path exists already.
+        if (Files.exists(path) && (Files.isDirectory(path) || Files.isSymbolicLink(path))) {
             return path;
         }
         return Files.createDirectory(path); // Returns the path when it is made.

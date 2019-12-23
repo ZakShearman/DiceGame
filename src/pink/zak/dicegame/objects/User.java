@@ -11,13 +11,16 @@ public class User {
     private AtomicInteger score;
     private Multiset<Integer> gameScores = HashMultiset.create();
 
-    public User(String username, String password, Multiset<Integer> gameScores) { // Take in the username or password of a user.
+    // Take in the username or password of a user.
+    public User(String username, String password, Multiset<Integer> gameScores) {
         this.username = username; // Assign username to variable
         this.password = password; // Assign password to variable.
         this.gameScores = gameScores;
-        this.score = new AtomicInteger(0); // An AtomicInteger must be initiated with a value.
+        // An AtomicInteger must be initiated with a value.
+        this.score = new AtomicInteger(0);
     }
 
+    // Used for registering a new user - as they do not have any game scores.
     public User(String username, String password) {
         this.username = username;
         this.password = password;

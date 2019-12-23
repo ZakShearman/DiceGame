@@ -21,7 +21,8 @@ public class Game {
             this.print("");
             this.print("[Round Start] Round %s is starting!", this.round);
             this.print("");
-            int playerOneRoundScore = this.roundForPlayer(this.player1); // Performs all of the game logic for player one and player two, returning the total score.
+            // Performs all of the game logic for player one and player two, returning the total score.
+            int playerOneRoundScore = this.roundForPlayer(this.player1);
             int playerTwoRoundScore = this.roundForPlayer(this.player2);
 
             // Prints statistics for the player's rounds.
@@ -62,22 +63,29 @@ public class Game {
     }
 
     public int roundForPlayer(User player) {
-        DoubleDice playerOneDice = DoubleDice.roll(); // Roll the dice
-        int roundScore; // Initializes an integer for storing of the player's round score.
+        // Roll the dice
+        DoubleDice playerOneDice = DoubleDice.roll();
+        // Initializes an integer for storing of the player's round score.
+        int roundScore;
 
         player.addToScore(playerOneDice.getTotal());
-        if (playerOneDice.isTotalOdd()) { // If the total is odd, removes 5 from the player's score and returns -5 as the round score.
+        // If the total is odd, removes 5 from the player's score and returns -5 as the round score.
+        if (playerOneDice.isTotalOdd()) {
             player.removeFromScore(5);
             roundScore = -5;
-        } else { // If the total is even, adds 10 to the player's score and returns 10 as the round score.
+        } else {
+            // If the total is even, adds 10 to the player's score and returns 10 as the round score.
             player.addToScore(10);
             roundScore = 10;
         }
-        if (playerOneDice.areSame()) { // Re rolls the dice for the player if they are the same (e.g 5 and 5 or 2 and 2)
+        // Re rolls the dice for the player if they are the same (e.g 5 and 5 or 2 and 2)
+        if (playerOneDice.areSame()) {
             DoubleDice diceRoll = DoubleDice.roll();
             player.addToScore(diceRoll.getTotal());
             roundScore = roundScore + diceRoll.getTotal();
         }
-        return roundScore; // Returns the total amount that the player has gained in the round. For use with displaying stats.
+        // Returns the total amount that the player has gained in the round.
+        // Used for displaying stats.
+        return roundScore;
     }
 }
