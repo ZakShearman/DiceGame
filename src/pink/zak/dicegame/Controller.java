@@ -5,17 +5,22 @@ import pink.zak.dicegame.objects.Game;
 import pink.zak.dicegame.objects.User;
 import pink.zak.dicegame.storage.Storage;
 
+import java.util.Map;
 import java.util.Scanner;
 
 public class Controller {
     private final UserCache userCache;
     private final Storage storage;
+    private final LeaderBoard leaderBoard;
     private User playerOne;
 
     public Controller() {
         this.storage = new Storage(this);
         this.userCache = new UserCache(this.storage); // Create an instance of the UserCache.
         this.storage.cache();
+        this.leaderBoard = new LeaderBoard(this.userCache);
+
+        this.leaderBoard.update();
     }
 
     public void onEnable() {
@@ -64,6 +69,19 @@ public class Controller {
                     game.initiate(); // Start the game.
                 }
             case "leaderboard":
+                Map<String, Integer> leaderBoard =  this.leaderBoard.getLeaderBoard();
+                this.print("Here are the top players:");
+                int i = 1;
+                try {
+                    while (i <= 10) {
+                        Object key = leaderBoard.keySet().toArray()[i-1];
+                        this.print("%s -> %s with %s points", i, key, leaderBoard.get(key));
+                        i++;
+                    }
+                } catch (ArrayIndexOutOfBoundsException exception) {
+                    this.loginOrRegister(Player.PLAYER1);
+                    return;
+                }
 
             default:
                 this.print("[%s] Your input could not be recognised. Starting again.", player.getName());
