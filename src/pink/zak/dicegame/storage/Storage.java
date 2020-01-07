@@ -23,12 +23,15 @@ public class Storage {
     public Storage(Controller controller) {
         this.controller = controller;
         // Creates folder on the Desktop.
-        this.baseDirectoryPath = this.makePathIfNotExists(FileSystemView.getFileSystemView().getHomeDirectory().toPath().resolve("Zak's Dice Game"));
-        this.userPath = this.makePathIfNotExists(this.baseDirectoryPath.resolve("userdata")); // Creates folder for storing user data.
+        this.baseDirectoryPath = this.makePathIfNotExists(FileSystemView.getFileSystemView()
+                .getHomeDirectory().toPath().resolve("Zak's Dice Game"));
+        // Creates folder for storing user data.
+        this.userPath = this.makePathIfNotExists(this.baseDirectoryPath.resolve("userdata"));
     }
 
     public void cache() {
-        UserCache userCache = controller.getUserCache(); // Gets the user cache for registering that a user is loaded.
+        // Gets the user cache for registering that a user is loaded.
+        UserCache userCache = controller.getUserCache();
 
         // Loops through all of the files.
         //noinspection ConstantConditions <- IntelliJ annotation
@@ -40,17 +43,23 @@ public class Storage {
 
     @SneakyThrows
     public User loadUser(String username) {
-        Path userPath = this.userPath.resolve(username + ".json"); // Get the user's file path.
-        File userFile = userPath.toFile(); // Get the file path as a file.
-        if (!userFile.exists()) { // Return null if the user has not registered. This null is handled by the UserCache
+        // Get the user's file path.
+        Path userPath = this.userPath.resolve(username + ".json");
+        // Get the file path as a file.
+        File userFile = userPath.toFile();
+        // Return null if the user has not registered. This null is handled by the UserCache.
+        if (!userFile.exists()) {
             return null;
         }
-        FileReader fileReader = new FileReader(userFile); // Create all that is required to read the JSON file.
+        // Create all that is required to read the JSON file.
+        FileReader fileReader = new FileReader(userFile);
         JsonParser jsonParser = new JsonParser();
         JsonObject jsonObject = jsonParser.parse(fileReader).getAsJsonObject();
 
-        String password = jsonObject.get("password").getAsString(); // Gets the password of the user.
-        Multiset<Integer> gameScores = HashMultiset.create(); // Creates a set for the scores of the user.
+        // Gets the password of the user.
+        String password = jsonObject.get("password").getAsString();
+        // Creates a set for the scores of the user.
+        Multiset<Integer> gameScores = HashMultiset.create();
         // Loops through all of the scores of the user and adds them to the set.
         for (JsonElement element : jsonObject.get("scores").getAsJsonArray()) {
             gameScores.add(element.getAsInt());
@@ -61,23 +70,33 @@ public class Storage {
 
     @SneakyThrows
     public void saveUser(User user) {
-        Path userPath = this.userPath.resolve(user.getUsername() + ".json"); // Gets the user's fine path.
-        File userFile = userPath.toFile(); // Gets the file path as a File.
-        Gson gson = new Gson(); // Create a Gson, for use writing to the JSON file.
-        if (!userFile.exists()) { // Creates a JSON file for the user if it does not exist.
+        // Gets the user's file path.
+        Path userPath = this.userPath.resolve(user.getUsername() + ".json");
+        // Gets the file path as a File.
+        File userFile = userPath.toFile();
+        // Create a Gson, for use writing to the JSON file.
+        Gson gson = new Gson();
+        // Creates a JSON file for the user if it does not exist.
+        if (!userFile.exists()) {
             userFile.createNewFile();
         }
 
-        Writer writer = Files.newBufferedWriter(userPath); // Creates the Writer that will put all the data into the JSON file.
+        // Creates the Writer that will put all the data into the JSON file.
+        Writer writer = Files.newBufferedWriter(userPath);
         JsonObject jsonObject = new JsonObject();
-        JsonArray jsonArray = new JsonArray(); // Array that is specifically used for the user's scores.
+        // Array that is specifically used for the user's scores.
+        JsonArray jsonArray = new JsonArray();
         jsonObject.addProperty("password", user.getPassword());
-        for (int score : user.getGameScores()) { // Loops through all of the user's scores and adds them to the JsonArray.
+        // Loops through all of the user's scores and adds them to the JsonArray.
+        for (int score : user.getGameScores()) {
             jsonArray.add(score);
         }
-        jsonObject.add("scores", jsonArray); // Adds the JsonArray to the JsonObject to be written.
-        gson.toJson(jsonObject, writer); // Writes the JsonObject to the user's path using the Writer.
-        writer.close(); // Ends the writer -> general code practice.
+        // Adds the JsonArray to the JsonObject to be written.
+        jsonObject.add("scores", jsonArray);
+        // Writes the JsonObject to the user's path using the Writer.
+        gson.toJson(jsonObject, writer);
+        // Ends the writer -> general code practice.
+        writer.close();
     }
 
     @SneakyThrows
@@ -86,6 +105,7 @@ public class Storage {
         if (Files.exists(path) && (Files.isDirectory(path) || Files.isSymbolicLink(path))) {
             return path;
         }
-        return Files.createDirectory(path); // Returns the path when it is made.
+        // Returns the path when it is made.
+        return Files.createDirectory(path);
     }
 }

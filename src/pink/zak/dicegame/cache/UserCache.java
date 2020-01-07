@@ -15,10 +15,6 @@ public class UserCache {
         this.storage = storage;
     }
 
-    public Map<String, User> getUsers() {
-        return this.userMap;
-    }
-
     public User authenticateUser(String username, String password) {
         String usernameLower = username.toLowerCase();
         // Checks if the user is in the map, and if they are, proceed.
@@ -44,6 +40,7 @@ public class UserCache {
         return this.userMap.get(usernameLower);
     }
 
+    // Used to identify that a user has been cached and puts them into the map once they are created.
     public void cachedUser(User user) {
         if (!this.userMap.containsValue(user)) {
             this.userMap.put(user.getUsername(), user);
@@ -54,5 +51,9 @@ public class UserCache {
         for (User user : userMap.values()) {
             this.storage.saveUser(user);
         }
+    }
+
+    public Map<String, User> getUsers() {
+        return this.userMap;
     }
 }

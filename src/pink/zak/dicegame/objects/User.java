@@ -48,15 +48,7 @@ public class User {
         return this.gameScores;
     }
 
-    // Setters
-    public void setScore(AtomicInteger score) {
-        this.score = score;
-        if (this.score.intValue() <= 0) {
-            this.score.set(0);
-        }
-    }
-
-    // Other
+    // Setters and other
     public void addToScore(int amount) {
         this.score.set(this.score.intValue() + amount);
     }

@@ -26,11 +26,15 @@ public class Game {
             int playerTwoRoundScore = this.roundForPlayer(this.player2);
 
             // Prints statistics for the player's rounds.
-            this.print("[%s] You gained %s points this round.", this.player1.getUsername(), playerOneRoundScore);
-            this.print("[%s] You now have a total score of %s", this.player1.getUsername(), this.player1.getScore().intValue());
+            this.print("[%s] You gained %s points this round.",
+                    this.player1.getUsername(), playerOneRoundScore);
+            this.print("[%s] You now have a total score of %s",
+                    this.player1.getUsername(), this.player1.getScore().intValue());
             this.print(" ");
-            this.print("[%s] You gained %s points this round.", this.player2.getUsername(), playerTwoRoundScore);
-            this.print("[%s] You now have a total score of %s", this.player2.getUsername(), this.player2.getScore().intValue());
+            this.print("[%s] You gained %s points this round.",
+                    this.player2.getUsername(), playerTwoRoundScore);
+            this.print("[%s] You now have a total score of %s",
+                    this.player2.getUsername(), this.player2.getScore().intValue());
 
             this.print("");
             this.print("[Round End] Round %s has now ended!", this.round);
@@ -40,26 +44,33 @@ public class Game {
         int finalPlayerOneScore = this.player1.getScore().intValue();
         int finalPlayerTwoScore = this.player2.getScore().intValue();
         this.print("");
-        if (this.player1.getScore().intValue() > this.player2.getScore().intValue()) { // If player one has the higher score.
+        // If player one has the higher score.
+        if (this.player1.getScore().intValue() > this.player2.getScore().intValue()) {
             // Print out winning and stats.
-            this.print("%s is the winner of the game with a score of %s.", this.player1.getUsername(), finalPlayerOneScore);
-            this.print("%s lost with a score of %s.", this.player2.getUsername(), finalPlayerTwoScore);
-            this.print("This means that %s lost by %s points.", this.player2.getUsername(), finalPlayerOneScore - finalPlayerTwoScore);
-        } else if (this.player1.getScore().intValue() < this.player2.getScore().intValue()) { // If player two has the higher score.
-            this.print("%s is the winner of the game with a score of %s.", this.player2.getUsername(), finalPlayerTwoScore);
-            this.print("%s lost with a score of %s.", this.player1.getUsername(), finalPlayerOneScore);
-            this.print("This means that %s lost by %s points.", this.player1.getUsername(), finalPlayerTwoScore - finalPlayerOneScore);
+            this.print("%s is the winner of the game with a score of %s.",
+                    this.player1.getUsername(), finalPlayerOneScore);
+            this.print("%s lost with a score of %s.",
+                    this.player2.getUsername(), finalPlayerTwoScore);
+            this.print("This means that %s lost by %s points.",
+                    this.player2.getUsername(), finalPlayerOneScore - finalPlayerTwoScore);
+            // If player two has the higher score.
+        } else if (this.player1.getScore().intValue() < this.player2.getScore().intValue()) {
+            this.print("%s is the winner of the game with a score of %s.",
+                    this.player2.getUsername(), finalPlayerTwoScore);
+            this.print("%s lost with a score of %s.",
+                    this.player1.getUsername(), finalPlayerOneScore);
+            this.print("This means that %s lost by %s points.",
+                    this.player1.getUsername(), finalPlayerTwoScore - finalPlayerOneScore);
+            // If the users have the same score.
         } else {
             this.print("The game resulted in a draw!");
-            this.print("Both %s and %s had %s points!", this.player1.getUsername(), this.player2.getUsername(), this.player1.getScore());
+            this.print("Both %s and %s had %s points!",
+                    this.player1.getUsername(), this.player2.getUsername(), this.player1.getScore());
         }
-        this.player1.addFinalGameScore(this.player1.getScore().intValue()); // Adds game score for use in the leader board.
+        // Adds game score for use in the leader board.
+        this.player1.addFinalGameScore(this.player1.getScore().intValue());
         this.player2.addFinalGameScore(this.player2.getScore().intValue());
         this.userCache.save(); // Saves the user.
-    }
-
-    private void print(String string, Object... objects) {
-        System.out.println(String.format(string, objects)); // Print method with String formatting support.
     }
 
     public int roundForPlayer(User player) {
@@ -87,5 +98,10 @@ public class Game {
         // Returns the total amount that the player has gained in the round.
         // Used for displaying stats.
         return roundScore;
+    }
+
+    private void print(String string, Object... objects) {
+        // Print method with String formatting support.
+        System.out.println(String.format(string, objects));
     }
 }

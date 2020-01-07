@@ -30,7 +30,7 @@ public class Controller {
 
     private void loginOrRegister(Player player) {
         // player.getName# used for getting [Player 1] or [Player 2] using the Enum.
-        this.print("[%s] Please enter login, register or 'leaderboard.", player.getName());
+        this.print("[%s] Please enter login, register or leaderboard.", player.getName());
         Scanner scanner = new Scanner(System.in); // Creates the scanner, used later on.
         String nextLine = scanner.nextLine(); // Sets nextLine to the value of what is typed.
         switch (nextLine.toLowerCase()) {
@@ -59,7 +59,8 @@ public class Controller {
                 this.print("[%s] Please enter your password:", player.getName());
                 String password2 = scanner.nextLine(); // Gather the username and password information.
 
-                User user2 = this.userCache.registerUser(username2, password2); // Use the UserCache's registration method.
+                // Use the UserCache's registration method.
+                User user2 = this.userCache.registerUser(username2, password2);
                 if (user2 == null) {
                     this.print("[%s] Username already taken and password did not match.", player.getName());
                     this.loginOrRegister(player);
